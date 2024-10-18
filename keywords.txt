@@ -28,3 +28,5 @@ setConnectionTimeout	KEYWORD1
 setRestartOnSuccess	KEYWORD1
 setShowInputField	KEYWORD1
 enableSerialDebug	KEYWORD1
+getNetworkSSID  KEYWORD1
+getNetworkKey   KEYWORD1

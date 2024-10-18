@@ -11,6 +11,7 @@ This library provides an easy-to-use, customizable solution for setting up a mod
 -   Callbacks for input validation and factory reset
 -   Optional input field for user-specific data
 -   Configurable connection timeout and behavior
+-   Retrieve stored credentials on-demand for use with other libraries/use cases
 
 ![Main Page](extras/main_page.png) ![Connection Success](extras/conenction_success.png) ![Factory Reset](extras/factory_reset.png)
 
@@ -50,6 +51,12 @@ Initiates the connection to the WiFi network. If the device has stored credentia
 
 #### `setupAccessPointAndServer()`
 Sets up the access point and server for the captive portal. This function is called automatically by `connectToWiFi()` if necessary.
+
+#### `getNetworkSSID()`
+Return the stored wifi SSID.
+
+#### `getNetworkKey()`
+Return the stored wifi key.
 
 #### `resetCredentials()`
 Resets the stored WiFi credentials.
