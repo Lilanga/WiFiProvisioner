@@ -17,7 +17,7 @@ namespace WiFiProvisioner
     restartOnSuccess = value;
   }
   void WiFiProvisioner::stopServerLoop(bool value) { stopLoopFlag = value; }
-  void WiFiProvisioner::setConnectionTimeout(unsigned long timeout)
+  void WiFiProvisioner::setConnectionTimeout(unsigned int timeout)
   {
     connectionTimeout = timeout;
   }
@@ -97,8 +97,7 @@ namespace WiFiProvisioner
       WiFi.mode(WIFI_STA); // Set Wi-Fi mode to STA
       delay(wifiDelay);
       debugPrintln(
-          "Found existing wifi credientials, trying to connect with timeout" +
-          String(connectionTimeout));
+          "Found existing wifi credientials, trying to connect with timeout: " + String(connectionTimeout));
 
       // Try to Connect to the WiFi with stored credentials
       if (storedPassword.isEmpty())
@@ -110,14 +109,17 @@ namespace WiFiProvisioner
         WiFi.begin(storedSSID.c_str(), storedPassword.c_str());
       }
       unsigned long startTime = millis();
+
       while (WiFi.status() != WL_CONNECTED)
       {
         delay(wifiDelay);
-
         // Check if the connection timeout is reached
         if (connectionTimeout != 0 &&
             (millis() - startTime) >= connectionTimeout)
         {
+          // Connection timeout reached, disconnect and continue to start the provision
+          // wifi need to be disconnected and stopped before starting the provision
+
           WiFi.disconnect();
           delay(wifiDelay);
           debugPrintln(
@@ -150,6 +152,12 @@ namespace WiFiProvisioner
 
     // Configure the access point
     WiFi.softAPConfig(apIP, apIP, netMsk);
+    // Check if the AP name is set, if not set a default name from chip id prefixing with AP_PREFIX
+    if (AP_NAME == "")
+    {
+      AP_NAME = AP_PREFIX + String((uint32_t)ESP.getEfuseMac(), HEX);
+    }
+
     WiFi.softAP(AP_NAME.c_str());
     delay(wifiDelay);
     debugPrintln("AP IP address: " + String(WiFi.softAPIP()));

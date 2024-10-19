@@ -18,7 +18,8 @@ namespace WiFiProvisioner
   public:
     WiFiProvisioner();
     ~WiFiProvisioner();
-    String AP_NAME = "ESP32 Wi-Fi Provisioning";
+    String AP_NAME = "";
+    String AP_PREFIX = "ESP32";
     String HTML_TITLE = "Welcome to Wifi Provision";
     String THEME_COLOR = "dodgerblue";
     String SVG_LOGO = R"rawliteral(
@@ -49,7 +50,7 @@ namespace WiFiProvisioner
     void setInputCheckCallback(InputCheckCallback callback);
     void setFactoryResetCallback(FactoryResetCallback callback);
     void setOnProvisionCallback(OnProvisionCallback callback);
-    void setConnectionTimeout(unsigned long timeout);
+    void setConnectionTimeout(unsigned int timeout);
     void setShowInputField(bool value);
     void setRestartOnSuccess(bool value);
     void enableSerialDebug(bool enable);
@@ -88,7 +89,7 @@ namespace WiFiProvisioner
     bool restartOnSuccess = false;
     bool stopLoopFlag = false;
     bool serialDebug = false;
-    unsigned long connectionTimeout = 0;
+    unsigned int connectionTimeout = 1500;
     unsigned int wifiDelay = 100;
     unsigned int newWifiConnectionTimeout = 10000;
     const byte DNS_PORT = 53;
